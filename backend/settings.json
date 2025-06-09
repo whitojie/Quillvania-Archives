@@ -1,0 +1,5 @@
+{
+  "python.analysis.extraPaths": ["."],
+  "python.analysis.typeCheckingMode": "basic",
+  "python.defaultInterpreterPath": "./env/Scripts/python.exe"
+}
