@@ -3,8 +3,6 @@ To run frontend:
 make sure to save everything manually
 run command npm run dev in frontend directory
 
-password starts with d
-
 selected python.exe as interpreter
 
 Git Stuff
