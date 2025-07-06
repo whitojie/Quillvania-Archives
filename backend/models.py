@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from database import Base  # Changed from relative import to direct import
 
+# Define a User model/table in the database
 class User(Base):
     __tablename__ = "users"
 
@@ -8,6 +9,8 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     full_name = Column(String)
+    hashed_password = Column(String)
+#  Define an Item model/table in the database
 
 class Item(Base):
     __tablename__ = "items"
