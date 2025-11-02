@@ -25,65 +25,70 @@ function SignupPage() {
     }
   };
 
-  return (
-    <div className="page-wrapper">
-      <div className="header-wrapper">
-        <h1 className="main-title">Join Quillvania</h1>
-        <h2 className="subtitle">Begin your writing adventure</h2>
+return (
+    <div className="login-page-wrapper">
+      <div className="login-header">
+        <h1 className="login-title">Join Quillvania</h1>
+        <h2 className="login-subtitle">Begin your writing adventure</h2>
       </div>
 
       <div className="login-container">
-        <form onSubmit={handleSubmit} className="auth-form">
-          
+        <form onSubmit={handleSubmit} className="login-form">
+          {/* Row 1: Username and Full Name */}
           <div className="input-row">
             <div className="input-group half">
-              <label>Username</label>
+              <label htmlFor="username">Username</label>
               <input
                 type="text"
+                id="username"
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                required
+                required 
               />
             </div>
 
             <div className="input-group half">
-              <label>Full Name</label>
+              <label htmlFor="full_name">Full Name</label>
               <input
                 type="text"
+                id="full_name"
                 value={formData.full_name}
                 onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                required
+                required 
               />
             </div>
           </div>
 
+          {/* Row 2: Email and Password */}
           <div className="input-row">
             <div className="input-group half">
-              <label>Email</label>
+              <label htmlFor="email">Email</label>
               <input
                 type="email"
+                id="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
+                required 
               />
             </div>
 
             <div className="input-group half">
-              <label>Password</label>
+              <label htmlFor="password">Password</label>
               <input
                 type="password"
+                id="password"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                required
+                required 
               />
             </div>
           </div>
 
-          <button type="submit" className="auth-button">Register</button>
+          <button type="submit" className="login-button">Register</button>
 
           {message && <p className="error-message">{message}</p>}
 
-          <p className="auth-alternate-action">
+          <p className="alternate-action">
             Already have an account?{" "}
             <Link to="/login" className="auth-link">Log in</Link>
           </p>
@@ -92,5 +97,6 @@ function SignupPage() {
     </div>
   );
 }
+
 
 export default SignupPage;

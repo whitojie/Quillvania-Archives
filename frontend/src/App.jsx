@@ -1,21 +1,43 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
-import AccountPage from "./pages/AccountPage";
-
-
-const API_BASE_URL = "http://localhost:8000"; // Change this if backend is on a different host
-
+import DashboardPage from "./pages/DashboardPage";
+import WorldDetailPage from "./pages/WorldDetailPage";
+import CharacterDetailPage from "./pages/CharacterDetailPage";
+import EventDetailPage from "./pages/EventDetailPage";
+import LocationDetailPage from "./pages/LocationDetailPage";
 
 function App() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/account" element={<AccountPage />} />
+
+      {/* Protected routes */}
+      <Route
+        path="/dashboard"
+        element={user ? <DashboardPage /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/world/:worldId"
+        element={user ? <WorldDetailPage /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/world/:worldId/character/:charId"
+        element={user ? <CharacterDetailPage /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/world/:worldId/event/:eventId"
+        element={user ? <EventDetailPage /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/world/:worldId/location/:locId"
+        element={user ? <LocationDetailPage /> : <Navigate to="/login" />}
+      />
     </Routes>
   );
 }

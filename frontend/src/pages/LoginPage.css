@@ -1,144 +1,104 @@
-/*------------------------------------------
+/*-------------------------
   Fonts
-------------------------------------------*/
+-------------------------*/
 @font-face {
   font-family: 'TitleFont';
   src: url('../assets/ruritania/Ruritania.ttf') format('truetype');
 }
-
 @font-face {
   font-family: 'BodyFont';
   src: url('../assets/Alkhemikal.ttf') format('truetype');
 }
 
-/*------------------------------------------
-  Reset & Base
-------------------------------------------*/
+/* Global Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  height: 100vh;
-  margin: 0;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #3A1079;
-
-  /* Layered background images */
-  background-image: url('/assets/scroll-background-png-8.png'), url('/assets/Vector2.png'), url('/assets/Vector1.png');
-  background-size: 600px, 96% 96%, 98% 98%;
-  background-position: 50% 95%, center, center;
-  background-repeat: no-repeat, no-repeat, no-repeat;
+html, body, #root {
+  height: 100%;
+  width: 100%;
 }
 
-/*------------------------------------------
-  Page Structure
-------------------------------------------*/
-.page-wrapper {
-  position: relative;
-  width: 100%;
+/*-------------------------
+  Login Page Wrapper - UPDATED
+-------------------------*/
+.login-page-wrapper {
   min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  background-color: #3A1079;
+  background-image: url('/assets/scroll-background-png-8.png'), url('/assets/Vector2.png'), url('/assets/Vector1.png');
+  background-size: 600px, cover, cover;
+  background-position: 50% 85%, center, center;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  padding: 0;
+  margin: 0;
 }
 
-/*------------------------------------------
-  Title & Subtitle Independent Positioning
-------------------------------------------*/
-/*Quillvania Titile*/
-.header-wrapper {
-  position: absolute;
-  top: 60px;
-  left: 50%;
-  transform: translateX(-50%);
+/* Rest of your existing CSS remains the same */
+.login-header {
   text-align: center;
-  width: 100%;
-  max-width: 600px;
-  pointer-events: none;
+  margin-bottom: 60px;
 }
 
-.main-title {
+.login-title {
   font-family: 'TitleFont', serif;
   font-size: 3rem;
   color: #ffffff;
 }
 
-.subtitle {
+.login-subtitle {
   font-family: 'BodyFont', sans-serif;
   font-size: 1.25rem;
-  font-weight: normal;
   color: #ffffff;
   margin-top: 0.5rem;
 }
 
-/*------------------------------------------
-  Login Container (Centered Independently)
-------------------------------------------*/
 .login-container {
   width: 100%;
-  max-width: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 1;
-  text-align: center;
-  margin-top: 120px; 
 }
 
-/*------------------------------------------
-  Form Styles
-------------------------------------------*/
-.auth-form {
+.login-form {
   width: 100%;
-  max-width: 400px;
-  height: 400px;
+  max-width: 400px; /* Added for better form sizing */
+  padding: 40px;
+  box-sizing: border-box;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 80px;
-  box-sizing: border-box;
+  gap: 1rem;
 }
 
-/*------------------------------------------
-  Input Fields
-------------------------------------------*/
 .input-group {
-  width: 100%;
-  margin-bottom: 1rem;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
 }
 
 .input-group label {
-  display: block;
   font-family: 'BodyFont', sans-serif;
   font-weight: 600;
-  margin-bottom: 0.1rem;
+  margin-bottom: 0.25rem;
   color: black;
 }
 
 .input-group input {
-  width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ffffff;
   border-radius: 0.375rem;
+  border: 1px solid #ccc;
   font-family: 'BodyFont', sans-serif;
-  background-color: white;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   color: black;
 }
 
-/*------------------------------------------
-  Buttons
-------------------------------------------*/
-.auth-button {
-  width: 100%;
+.login-button {
   padding: 0.75rem;
   background-color: #2a0730;
   color: white;
@@ -147,26 +107,20 @@ body {
   font-family: 'BodyFont', sans-serif;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.auth-button:hover {
+.login-button:hover {
   background-color: #1d051e;
 }
 
-/*------------------------------------------
-  Utility & Links
-------------------------------------------*/
 .error-message {
   color: #dc2626;
-  margin-top: 1rem;
   font-family: 'BodyFont', sans-serif;
 }
 
-.auth-alternate-action {
-  margin-top: 1.5rem;
+.alternate-action {
   font-family: 'BodyFont', sans-serif;
-  color: #ffffff;
+  text-align: center;
 }
 
 .auth-link {
@@ -179,19 +133,44 @@ body {
   text-decoration: underline;
 }
 
-/* Add these styles to your CSS file */
+/* Two-column layout styles */
 .input-row {
   display: flex;
+  gap: 1rem;
   width: 100%;
-  gap: 1rem; /* Space between columns */
-  margin-bottom: 1rem;
 }
 
 .input-group.half {
-  flex: 1; /* Each column takes equal width */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Update the existing auth-form padding to give more room */
-.auth-form {
-  padding: 40px; /* Reduced from 80px to make room for side-by-side inputs */
+/* Make sure the form container is wide enough for two columns */
+.login-form {
+  width: 100%;
+  max-width: 400px; /* Increased from 400px to accommodate two columns */
+  padding: 40px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Ensure labels and inputs work well in the two-column layout */
+.input-group.half label {
+  font-family: 'BodyFont', sans-serif;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: black;
+}
+
+.input-group.half input {
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid #ccc;
+  font-family: 'BodyFont', sans-serif;
+  color: black;
+  width: 100%;
 }

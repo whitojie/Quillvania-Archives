@@ -1,0 +1,193 @@
+/*------------------------------------------
+  Fonts
+------------------------------------------*/
+@font-face {
+  font-family: 'TitleFont';
+  src: url('../assets/ruritania/Ruritania.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'BodyFont';
+  src: url('../assets/Alkhemikal.ttf') format('truetype');
+}
+
+/*------------------------------------------
+  Reset & Base
+------------------------------------------*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'BodyFont', sans-serif;
+  background-color: #3A1079;
+  color: white;
+}
+
+/*------------------------------------------
+  Page Wrapper
+------------------------------------------*/
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  width: 100%;
+  padding: 5vh 1rem;
+
+  /* Background Images */
+  background-image: url('/assets/Vector2.png'), url('/assets/Vector1.png');
+  background-size: 96% 96%, 98% 98%;
+  background-position: 50% 95%, center;
+  background-repeat: no-repeat, no-repeat;
+}
+
+/*------------------------------------------
+  Card / Main Content
+------------------------------------------*/
+.card {
+  background-color: rgba(255, 255, 255, 0.05); /* subtle white overlay */
+  padding: 40px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/*------------------------------------------
+  Buttons
+------------------------------------------*/
+.auth-button, .add-world-button {
+  background-color: #2a0730;
+  color: white;
+  font-family: 'BodyFont', sans-serif;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-button:hover, .add-world-button:hover {
+  background-color: #1d051e;
+}
+
+.delete-button {
+  background-color: #a00;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #800;
+}
+
+/*------------------------------------------
+  World Form
+------------------------------------------*/
+.world-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.world-form input,
+.world-form textarea {
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  border: none;
+  width: 100%;
+  font-family: 'BodyFont';
+  font-size: 1rem;
+}
+
+/*------------------------------------------
+  Worlds Section
+------------------------------------------*/
+.worlds-container, .world-list {
+  display: flex;
+  flex-direction: column; /* ensures headers stack vertically */
+  gap: 1rem;
+  width: 100%;
+}
+
+.world-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 1rem 0;
+}
+
+.world-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.world-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+}
+
+/*------------------------------------------
+  Active World Details
+------------------------------------------*/
+.active-world {
+  margin-top: 2rem;
+  background-color: rgba(0,0,0,0.2);
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
+.active-world h3 {
+  font-family: 'TitleFont';
+  font-size: 2rem;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+
+.world-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.world-sections > div {
+  flex: 1 1 200px;
+  background-color: rgba(255,255,255,0.05);
+  padding: 1rem;
+  border-radius: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/*------------------------------------------
+  Preformatted Data
+------------------------------------------*/
+pre {
+  background-color: #f3f3f3;
+  color: #000;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  text-align: left;
+  font-size: 0.9rem;
+}
