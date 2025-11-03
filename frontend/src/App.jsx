@@ -26,13 +26,33 @@ function App() {
         path="/world/:worldId"
         element={user ? <WorldDetailPage /> : <Navigate to="/login" />}
       />
+
+      {/* ✅ Character Routes */}
+      {/* Create new character */}
+      <Route
+        path="/world/:worldId/character/new"
+        element={user ? <CharacterDetailPage /> : <Navigate to="/login" />}
+      />
+      {/* Edit existing character */}
       <Route
         path="/world/:worldId/character/:charId"
         element={user ? <CharacterDetailPage /> : <Navigate to="/login" />}
       />
+
+      {/* ✅ Event Routes */}
+      <Route
+        path="/world/:worldId/event/new"
+        element={user ? <EventDetailPage /> : <Navigate to="/login" />}
+      />
       <Route
         path="/world/:worldId/event/:eventId"
         element={user ? <EventDetailPage /> : <Navigate to="/login" />}
+      />
+
+      {/* ✅ Location Routes */}
+      <Route
+        path="/world/:worldId/location/new"
+        element={user ? <LocationDetailPage /> : <Navigate to="/login" />}
       />
       <Route
         path="/world/:worldId/location/:locId"

@@ -65,20 +65,8 @@ function DashboardPage() {
   };
 
   // Open a world — load its data
-  const handleOpenWorld = async (world) => {
-    setActiveWorld(world);
-    try {
-      const [chars, evts, locs] = await Promise.all([
-        axios.get(`${API_BASE_URL}/characters/world/${world.id}`, axiosConfig),
-        axios.get(`${API_BASE_URL}/events/world/${world.id}`, axiosConfig),
-        axios.get(`${API_BASE_URL}/locations/world/${world.id}`, axiosConfig),
-      ]);
-      setCharacters(chars.data);
-      setEvents(evts.data);
-      setLocations(locs.data);
-    } catch (err) {
-      console.error("Error loading world data:", err);
-    }
+  const handleOpenWorld = (world) => {
+    navigate(`/world/${world.id}`);
   };
 
   // Logout

@@ -5,97 +5,129 @@ from typing import List
 from database import get_db
 import models, schemas
 from auth import get_current_user
+from schemas import CharacterUpdate
+from typing import Any
+
 
 # -------------------
-# Setup logging
+# Logging setup
 # -------------------
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/characters", tags=["Characters"])
+router = APIRouter(prefix="/characters", tags=["Characters"], include_in_schema=True)
 
 # -------------------
-# Create a new character
+# Create Character for a Specific World
 # -------------------
-@router.post("/", response_model=schemas.Character)
-def create_character(
+
+@router.post("/world/{world_id}", response_model=schemas.Character)
+def create_character_for_world(
+    world_id: int,
     character: schemas.CharacterCreate,
     db: Session = Depends(get_db),
-    current_user: models.User = Depends(get_current_user)
+    current_user: models.User = Depends(get_current_user),
 ):
+    # Optional: verify the world belongs to the user
+    world = db.query(models.World).filter(models.World.id == world_id).first()
+    if not world:
+        raise HTTPException(status_code=404, detail="World not found")
+    if world.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to add characters to this world")
+
+    # Create character
     db_character = models.Character(
         name=character.name,
         description=character.description,
         role=character.role,
-        user_id=current_user.id
+        world_id=world_id  # only include world_id
     )
     db.add(db_character)
     db.commit()
     db.refresh(db_character)
-
-    logger.info(f"User {current_user.username} created character '{db_character.name}' (ID: {db_character.id})")
     return db_character
 
 # -------------------
-# Get all characters for current user
+# Get All Characters in a World
 # -------------------
-@router.get("/", response_model=List[schemas.Character])
-def get_characters(
+@router.get("/world/{world_id}", response_model=List[schemas.Character])
+def get_characters_by_world(
+    world_id: int,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
 ):
-    characters = db.query(models.Character).filter(models.Character.user_id == current_user.id).all()
-    logger.info(f"User {current_user.username} fetched {len(characters)} characters")
+    # Verify ownership of the world
+    world = db.query(models.World).filter(
+        models.World.id == world_id,
+        models.World.user_id == current_user.id
+    ).first()
+
+    if not world:
+        logger.warning(f"User {current_user.username} tried to access characters for unauthorized world ID {world_id}")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="World not found or not yours")
+
+    characters = db.query(models.Character).filter(models.Character.world_id == world_id).all()
+    logger.info(f"User {current_user.username} fetched {len(characters)} characters from world '{world.name}'")
     return characters
 
+
 # -------------------
-# Get a specific character by ID
+# Get a Specific Character by ID
 # -------------------
-@router.get("/{character_id}", response_model=schemas.Character)
+@router.get("/{char_id}", response_model=schemas.Character)
 def get_character(
-    character_id: int,
+    char_id: int,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
 ):
-    character = db.query(models.Character).filter(
-        models.Character.id == character_id,
-        models.Character.user_id == current_user.id
-    ).first()
+    # Get the character and ensure the current user owns the world
+    character = (
+        db.query(models.Character)
+        .join(models.World)
+        .filter(models.Character.id == char_id)
+        .filter(models.World.user_id == current_user.id)  # check ownership via the world
+        .first()
+    )
     if not character:
-        logger.warning(f"User {current_user.username} tried to fetch non-existing character ID {character_id}")
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Character not found")
-    logger.info(f"User {current_user.username} fetched character '{character.name}' (ID: {character.id})")
+        raise HTTPException(status_code=404, detail="Character not found")
     return character
 
+
 # -------------------
-# Update a character
+# Update Character
 # -------------------
-@router.put("/{character_id}", response_model=schemas.Character)
+@router.put("/{character_id}")  # Fixed: removed duplicate "characters" prefix
 def update_character(
-    character_id: int,
-    character_update: schemas.CharacterCreate,
+    character_id: int,  # Fixed: parameter name matches path parameter
+    character_update: schemas.CharacterUpdate,  # Fixed: added schemas prefix
     db: Session = Depends(get_db),
-    current_user: models.User = Depends(get_current_user)
+    current_user: models.User = Depends(get_current_user)  # Fixed: proper type annotation
 ):
-    character = db.query(models.Character).filter(
-        models.Character.id == character_id,
-        models.Character.user_id == current_user.id
-    ).first()
+    # Get character and verify ownership via world
+    character = (
+        db.query(models.Character)
+        .join(models.World)
+        .filter(models.Character.id == character_id)
+        .filter(models.World.user_id == current_user.id)
+        .first()
+    )
+    
     if not character:
-        logger.warning(f"User {current_user.username} tried to update non-existing character ID {character_id}")
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Character not found")
-
-    character.name = character_update.name
-    character.description = character_update.description
-    character.role = character_update.role
-
+        raise HTTPException(status_code=404, detail="Character not found")
+    
+    # Update only provided fields
+    update_data = character_update.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(character, key, value)
+    
     db.commit()
     db.refresh(character)
+    
     logger.info(f"User {current_user.username} updated character '{character.name}' (ID: {character.id})")
     return character
 
 # -------------------
-# Delete a character
+# Delete Character
 # -------------------
 @router.delete("/{character_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_character(
@@ -107,11 +139,13 @@ def delete_character(
         models.Character.id == character_id,
         models.Character.user_id == current_user.id
     ).first()
+
     if not character:
         logger.warning(f"User {current_user.username} tried to delete non-existing character ID {character_id}")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Character not found")
 
     db.delete(character)
     db.commit()
+
     logger.info(f"User {current_user.username} deleted character '{character.name}' (ID: {character.id})")
     return

@@ -47,12 +47,15 @@ class Event(Base):
     __tablename__ = "events"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    description = Column(String)
-    world_id = Column(Integer, ForeignKey("worlds.id"))
+    title = Column(String, nullable=False)  # Use 'title' not 'name'
+    date = Column(Date, nullable=True)  # You have this column too
+    description = Column(Text, nullable=True)
+    location_id = Column(Integer, ForeignKey("locations.id"), nullable=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    world_id = Column(Integer, ForeignKey("worlds.id"), nullable=True)
 
     world = relationship("World", back_populates="events")
-
+    
 
 class Location(Base):
     __tablename__ = "locations"

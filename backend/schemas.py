@@ -51,14 +51,18 @@ class CharacterBase(BaseModel):
     description: Optional[str] = None
     role: Optional[str] = None
 
-class CharacterCreate(CharacterBase):
-    world_id: int
+class CharacterCreate(BaseModel):
+    name: str
+    description: str
+    role: str
+    world_id: Optional[int] = None
 
 class Character(CharacterBase):
     id: int
     world_id: int
     class Config:
         from_attributes = True
+
 
 class LocationBase(BaseModel):
     name: str
@@ -75,14 +79,44 @@ class Location(LocationBase):
 
 
 class EventBase(BaseModel):
-    name: str
+    title: str  # Change from 'name' to 'title'
     description: Optional[str] = None
+    date: Optional[str] = None  # Add date field since it exists in DB
+    location_id: Optional[int] = None  # Add location_id field
 
 class EventCreate(EventBase):
-    world_id: int
+    world_id: int  # This will come from the URL path
+
+class EventUpdate(BaseModel):
+    title: Optional[str] = None
+    date: Optional[str] = None
+    description: Optional[str] = None
+    location_id: Optional[int] = None
 
 class Event(EventBase):
     id: int
     world_id: int
+    user_id: Optional[int] = None
+    
     class Config:
         from_attributes = True
+
+
+# ---------------- Character ----------------
+class CharacterUpdate(BaseModel):
+    name: Optional[str] = None
+    age: Optional[int] = None
+    role: Optional[str] = None
+    description: Optional[str] = None
+
+# ---------------- Location ----------------
+class LocationUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    coordinates: Optional[str] = None
+
+# ---------------- Event ----------------
+class EventUpdate(BaseModel):
+    name: Optional[str] = None
+    date: Optional[str] = None
+    description: Optional[str] = None

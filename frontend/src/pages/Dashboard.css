@@ -20,12 +20,14 @@
   box-sizing: border-box;
 }
 
-body {
-  min-height: 100vh;
+html, body {
+  height: 100%; /* ensure body can grow with content */
+  margin: 0;
   font-family: 'BodyFont', sans-serif;
   background-color: #3A1079;
   color: white;
 }
+
 
 /*------------------------------------------
   Page Wrapper
@@ -35,8 +37,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  min-height: 100vh;
   width: 100%;
+  min-height: 100%; /* grow with content */
   padding: 5vh 1rem;
 
   /* Background Images */
@@ -44,6 +46,8 @@ body {
   background-size: 96% 96%, 98% 98%;
   background-position: 50% 95%, center;
   background-repeat: no-repeat, no-repeat;
+
+  background-color: #3A1079; /* fallback color if images don’t cover */
 }
 
 /*------------------------------------------
